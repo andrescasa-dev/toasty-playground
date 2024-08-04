@@ -3,12 +3,14 @@ import { Switch as SwitchHeadless } from "@headlessui/react";
 
 import { useState } from "react";
 
-function Switch() {
+function Switch({ name }: { name?: string }) {
   const [enabled, setEnabled] = useState(false);
 
   return (
     <SwitchHeadless
+      name={name}
       checked={enabled}
+      value="true"
       onChange={setEnabled}
       className="group inline-flex h-5 w-9 items-center rounded-full border-2 border-primary bg-white transition data-[checked]:bg-primary"
     >

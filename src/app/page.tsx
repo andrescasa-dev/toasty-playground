@@ -1,13 +1,13 @@
 "use client";
 
 import Button from "@/components/Button";
-import Checkbox from "@/components/Checkbox";
 import ConfigSection from "@/components/ConfigSection";
 import Input from "@/components/Input";
 import LabelWrapper from "@/components/LabelWrapper";
+import RadioGroup from "@/components/RadioGroup";
 import Switch from "@/components/Switch";
 import { ToastData } from "@/components/Toast";
-import ToastStack, { ToastWithId } from "@/components/ToastStack";
+import ToastStack from "@/components/ToastStack";
 import Text from "@/components/typography/Text";
 import useToast from "@/hooks/useToast";
 import { useState } from "react";
@@ -21,13 +21,17 @@ export default function Home() {
     const formData = new FormData(e.currentTarget);
     const entries = formData.entries();
 
-    const toastOpts: Record<string, string> = {};
+    const toastOpts: Record<string, string | Boolean> = {};
     for (const [key, value] of entries) {
-      toastOpts[key] = value;
+      if (value === "true") {
+        toastOpts[key] = Boolean(value);
+      } else {
+        toastOpts[key] = value as string;
+      }
     }
 
     const newToast = toastOpts as ToastData;
-
+    console.log(newToast);
     pushToast(toastOpts);
   };
 
@@ -58,40 +62,24 @@ export default function Home() {
 
         <div className="grid gap-4 px-5 md:max-w-5xl md:grid-cols-2 md:self-center">
           <ConfigSection title="Variants">
-            <div className="grid grid-cols-3 gap-2 gap-y-4">
-              <LabelWrapper text="Info">
-                <Checkbox />
-              </LabelWrapper>
-              <LabelWrapper text="Warning">
-                <Checkbox />
-              </LabelWrapper>
-              <LabelWrapper text="Error">
-                <Checkbox />
-              </LabelWrapper>
-            </div>
+            <RadioGroup
+              options={["info", "warning", "error"]}
+              className="grid grid-cols-3 gap-2 gap-y-4"
+            />
           </ConfigSection>
 
           <ConfigSection title="Position">
-            <div className="grid grid-cols-3 gap-2 gap-y-4">
-              <LabelWrapper text="Top-left">
-                <Checkbox />
-              </LabelWrapper>
-              <LabelWrapper text="Top">
-                <Checkbox />
-              </LabelWrapper>
-              <LabelWrapper text="Top-right">
-                <Checkbox />
-              </LabelWrapper>
-              <LabelWrapper text="Bottom-left">
-                <Checkbox />
-              </LabelWrapper>
-              <LabelWrapper text="Bottom">
-                <Checkbox />
-              </LabelWrapper>
-              <LabelWrapper text="Bottom-right">
-                <Checkbox />
-              </LabelWrapper>
-            </div>
+            <RadioGroup
+              options={[
+                "top-left",
+                "top",
+                "top-right",
+                "bottom-left",
+                "bottom",
+                "bottom-right",
+              ]}
+              className="grid grid-cols-3 gap-2 gap-y-4"
+            />
           </ConfigSection>
 
           <ConfigSection title="Message">
@@ -106,20 +94,24 @@ export default function Home() {
           <ConfigSection title="Close Options">
             <div className="flex flex-col gap-4">
               <LabelWrapper text="Auto-close">
-                <Switch />
+                <Switch name="autoClose" />
               </LabelWrapper>
               <div className="flex items-center gap-1">
                 <Text as="p" type="body-1">
                   Auto-close Delay:
                 </Text>
-                <Input placeholder="500" className="w-14" />
+                <Input
+                  name="autoCloseDelay"
+                  placeholder="500"
+                  className="w-14"
+                />
                 <Text as="p" type="body-1">
                   ms
                 </Text>
               </div>
 
               <LabelWrapper text="Click to close">
-                <Switch />
+                <Switch name="clickToClose" />
               </LabelWrapper>
             </div>
           </ConfigSection>
