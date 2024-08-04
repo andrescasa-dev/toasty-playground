@@ -1,3 +1,4 @@
+"use client";
 import { Switch as SwitchHeadless } from "@headlessui/react";
 
 import { useState } from "react";
@@ -9,9 +10,9 @@ function Switch() {
     <SwitchHeadless
       checked={enabled}
       onChange={setEnabled}
-      className="rounded-full group inline-flex h-6 w-11 items-center bg-gray-200 transition data-[checked]:bg-blue-600"
+      className="rounded-full group inline-flex h-5 w-9 items-center border border-primary bg-white transition data-[checked]:bg-primary"
     >
-      <span className="rounded-full size-4 translate-x-1 bg-white transition group-data-[checked]:translate-x-6" />
+      <span className="rounded-full size-3 translate-x-1 bg-primary transition group-data-[checked]:translate-x-5 group-data-[checked]:bg-white" />
     </SwitchHeadless>
   );
 }

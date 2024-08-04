@@ -16,12 +16,9 @@ const config: Config = {
         border: "#B3B2B2",
       },
     },
-    // spacing: {
-    //   "400": "16px",
-    //   "200": "6px",
-    // },
     borderRadius: {
       "400": "4px",
+      full: "1000px",
     },
   },
   plugins: [],

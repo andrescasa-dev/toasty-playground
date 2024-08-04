@@ -1,10 +1,10 @@
-import Checkboxes from "@/components/Checkbox";
-import CheckboxLabeled from "@/components/CheckboxLabeled";
+import Switch from "@/components/Switch";
+import SwitchLabeled from "@/components/SwitchLabeled";
 
 export default function Home() {
   return (
     <main>
-      <CheckboxLabeled>test</CheckboxLabeled>
+      <SwitchLabeled>hola</SwitchLabeled>
     </main>
   );
 }
