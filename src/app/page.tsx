@@ -1,10 +1,16 @@
+import Checkbox from "@/components/Checkbox";
 import Switch from "@/components/Switch";
-import SwitchLabeled from "@/components/SwitchLabeled";
+import LabelWrapper from "@/components/LabelWrapper";
 
 export default function Home() {
   return (
     <main>
-      <SwitchLabeled>hola</SwitchLabeled>
+      <LabelWrapper text="Hola">
+        <Switch />
+      </LabelWrapper>
+      <LabelWrapper text="Hola">
+        <Checkbox />
+      </LabelWrapper>
     </main>
   );
 }

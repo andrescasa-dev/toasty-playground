@@ -1,10 +1,11 @@
-import Text from "./typography/Text";
+import { Label as LabelHeadless } from "@headlessui/react";
+import { textStyles } from "./typography/Text";
 
-function Label({ children, ...delegation }: { children: string }) {
+function Label({ children, ...delegate }: { children: string }) {
   return (
-    <Text as="label" type="body-1" {...delegation}>
+    <LabelHeadless className={textStyles({ type: "body-1" })} {...delegate}>
       {children}
-    </Text>
+    </LabelHeadless>
   );
 }
 

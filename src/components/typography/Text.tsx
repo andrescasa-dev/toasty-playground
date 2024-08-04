@@ -1,6 +1,6 @@
 import { cva, VariantProps } from "class-variance-authority";
 
-const textStyles = cva("text-base", {
+export const textStyles = cva("text-base", {
   variants: {
     type: {
       "heading-sm": "font-semibold capitalize",
