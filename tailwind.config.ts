@@ -17,7 +17,8 @@ const config: Config = {
       },
     },
     borderRadius: {
-      "400": "4px",
+      "200": "0.25rem",
+      "400": "0.5rem",
       full: "1000px",
     },
   },

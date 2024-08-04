@@ -1,11 +1,12 @@
 import { cva, VariantProps } from "class-variance-authority";
 
-export const textStyles = cva("text-base", {
+export const textStyles = cva("", {
   variants: {
     type: {
-      "heading-sm": "font-semibold capitalize",
+      display: "font-semibold capitalize text-5xl md:text-[3.78rem]",
+      "heading-sm": "text-base font-semibold capitalize",
       "body-1": "text-sm md:text-base",
-      button: "font-medium",
+      button: "text-base font-medium",
     },
   },
 });
