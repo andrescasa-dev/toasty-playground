@@ -1,9 +1,10 @@
 import Checkboxes from "@/components/Checkbox";
+import CheckboxLabeled from "@/components/CheckboxLabeled";
 
 export default function Home() {
   return (
     <main>
-      <Checkboxes />
+      <CheckboxLabeled>test</CheckboxLabeled>
     </main>
   );
 }

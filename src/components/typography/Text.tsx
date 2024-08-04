@@ -16,8 +16,12 @@ export interface TextProps extends VariantProps<typeof textStyles> {
   children: string;
 }
 
-const Text = ({ as: Tag, children, type }: TextProps) => {
-  return <Tag className={textStyles({ type })}>{children}</Tag>;
+const Text = ({ as: Tag, children, type, ...delegate }: TextProps) => {
+  return (
+    <Tag {...delegate} className={textStyles({ type })}>
+      {children}
+    </Tag>
+  );
 };
 
 export default Text;
