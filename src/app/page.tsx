@@ -1,7 +1,9 @@
+import Checkboxes from "@/components/Checkbox";
+
 export default function Home() {
   return (
     <main>
-      <h1>First commit</h1>
+      <Checkboxes />
     </main>
   );
 }
