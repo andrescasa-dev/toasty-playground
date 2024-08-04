@@ -14,7 +14,7 @@ export const textStyles = cva("", {
 // declaring the type for the props, and adding the props of the cva styles
 export interface TextProps extends VariantProps<typeof textStyles> {
   as: keyof JSX.IntrinsicElements;
-  children: string;
+  children?: string;
 }
 
 const Text = ({ as: Tag, children, type, ...delegate }: TextProps) => {

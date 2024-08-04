@@ -1,26 +1,62 @@
+"use client";
+
 import Button from "@/components/Button";
 import Checkbox from "@/components/Checkbox";
 import ConfigSection from "@/components/ConfigSection";
 import Input from "@/components/Input";
 import LabelWrapper from "@/components/LabelWrapper";
 import Switch from "@/components/Switch";
-import Toast from "@/components/Toast";
+import { ToastData } from "@/components/Toast";
+import ToastStack, { ToastWithId } from "@/components/ToastStack";
 import Text from "@/components/typography/Text";
+import useToast from "@/hooks/useToast";
+import { useState } from "react";
 
 export default function Home() {
+  const { cleanToastStack, pushToast, toastList } = useToast();
+  const [msg, setMsg] = useState("");
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const entries = formData.entries();
+
+    const toastOpts: Record<string, string> = {};
+    for (const [key, value] of entries) {
+      toastOpts[key] = value;
+    }
+
+    const newToast = toastOpts as ToastData;
+
+    pushToast(toastOpts);
+  };
+
   return (
     <main className="flex h-screen items-center">
-      <div className="flex w-full flex-col gap-4 md:gap-y-9">
+      <ToastStack stackToastData={toastList} />
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-full flex-col gap-4 md:gap-y-9"
+      >
         <div className="flex flex-col items-center gap-4">
           <Text as="h1" type="display">
             Toasty
           </Text>
           <div className="flex gap-2">
-            <Button intent="secondary">Clear All</Button>
-            <Button intent="primary">Render Toast</Button>
+            <Button
+              type="button"
+              onClick={() => cleanToastStack()}
+              intent="secondary"
+            >
+              Clear All
+            </Button>
+            <Button type="submit" intent="primary">
+              Render Toast
+            </Button>
           </div>
         </div>
-        <section className="grid gap-4 px-5 md:max-w-5xl md:grid-cols-2 md:self-center">
+
+        <div className="grid gap-4 px-5 md:max-w-5xl md:grid-cols-2 md:self-center">
           <ConfigSection title="Variants">
             <div className="grid grid-cols-3 gap-2 gap-y-4">
               <LabelWrapper text="Info">
@@ -59,7 +95,12 @@ export default function Home() {
           </ConfigSection>
 
           <ConfigSection title="Message">
-            <Input placeholder="Short message" />
+            <Input
+              name="message"
+              onChange={(e) => setMsg(e.target.value)}
+              value={msg}
+              placeholder="Short message"
+            />
           </ConfigSection>
 
           <ConfigSection title="Close Options">
@@ -82,12 +123,11 @@ export default function Home() {
               </LabelWrapper>
             </div>
           </ConfigSection>
-        </section>
+        </div>
         <LabelWrapper text="Dark Mode" className="self-center">
           <Switch />
         </LabelWrapper>
-      </div>
-      <Toast />
+      </form>
     </main>
   );
 }

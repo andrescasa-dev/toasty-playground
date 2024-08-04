@@ -14,17 +14,19 @@ const buttonStyles = cva("rounded-400 inline-block px-3 py-2 cursor-pointer", {
   },
 });
 
-export interface ButtonProps extends VariantProps<typeof buttonStyles> {
+export interface ButtonProps
+  extends VariantProps<typeof buttonStyles>,
+    React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: string;
 }
 
-function Button({ children, intent, isFull }: ButtonProps) {
+function Button({ children, intent, isFull, ...delegate }: ButtonProps) {
   return (
-    <div className={buttonStyles({ intent, isFull })}>
+    <button {...delegate} className={buttonStyles({ intent, isFull })}>
       <Text as="p" type="button">
         {children}
       </Text>
-    </div>
+    </button>
   );
 }
 
