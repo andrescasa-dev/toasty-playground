@@ -7,13 +7,14 @@ import LabelWrapper from "@/components/LabelWrapper";
 import RadioGroup from "@/components/RadioGroup";
 import Switch from "@/components/Switch";
 import { ToastData } from "@/components/Toast";
-import ToastStack from "@/components/ToastStack";
+import ToastStack, { Position } from "@/components/ToastStack";
 import Text from "@/components/typography/Text";
 import useToast from "@/hooks/useToast";
 import { useState } from "react";
 
 export default function Home() {
-  const { cleanToastStack, pushToast, toastList } = useToast();
+  const { cleanToastStack, pushToast, toastList, setPosition, position } =
+    useToast();
   const [msg, setMsg] = useState("");
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
@@ -23,12 +24,17 @@ export default function Home() {
 
     const toastOpts: Record<string, string | Boolean> = {};
     for (const [key, value] of entries) {
-      if (value === "true") {
-        toastOpts[key] = Boolean(value);
-      } else {
-        toastOpts[key] = value as string;
+      if (key !== "position") {
+        if (value === "true") {
+          toastOpts[key] = Boolean(value);
+        } else {
+          toastOpts[key] = value as string;
+        }
       }
     }
+
+    const position = formData.get("position") as Position;
+    setPosition(position);
 
     const newToast = toastOpts as ToastData;
     console.log(newToast);
@@ -37,7 +43,7 @@ export default function Home() {
 
   return (
     <main className="flex h-screen items-center">
-      <ToastStack stackToastData={toastList} />
+      <ToastStack stackToastData={toastList} position={position} />
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col gap-4 md:gap-y-9"
@@ -63,13 +69,14 @@ export default function Home() {
         <div className="grid gap-4 px-5 md:max-w-5xl md:grid-cols-2 md:self-center">
           <ConfigSection title="Variants">
             <RadioGroup
-              options={["info", "warning", "error"]}
+              name="intent"
+              options={["info", "warning", "error", "notification"]}
               className="grid grid-cols-3 gap-2 gap-y-4"
             />
           </ConfigSection>
-
           <ConfigSection title="Position">
             <RadioGroup
+              name="position"
               options={[
                 "top-left",
                 "top",
@@ -81,7 +88,6 @@ export default function Home() {
               className="grid grid-cols-3 gap-2 gap-y-4"
             />
           </ConfigSection>
-
           <ConfigSection title="Message">
             <Input
               name="message"
@@ -90,7 +96,6 @@ export default function Home() {
               placeholder="Short message"
             />
           </ConfigSection>
-
           <ConfigSection title="Close Options">
             <div className="flex flex-col gap-4">
               <LabelWrapper text="Auto-close">

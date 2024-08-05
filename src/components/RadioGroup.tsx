@@ -6,13 +6,16 @@ import Radio from "./Radio";
 function RadioGroup({
   options,
   className,
+  name,
 }: {
   options: string[];
   className: string;
+  name: string;
 }) {
   const [selected, setSelected] = useState(options[0]);
   return (
     <RadioGroupHeadless
+      name={name}
       value={selected}
       onChange={setSelected}
       className={className}
