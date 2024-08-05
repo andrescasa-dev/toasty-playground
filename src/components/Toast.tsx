@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Text from "./typography/Text";
 import { CircleX, Info, TriangleAlert, X } from "lucide-react";
 import { cva, VariantProps } from "class-variance-authority";
@@ -29,13 +29,38 @@ const toastStyles = cva(
 
 export interface ToastData extends VariantProps<typeof toastStyles> {
   message?: string;
+  closeDelay?: number;
   handleClose?: () => void;
+  autoClose?: boolean;
+  clickToClose?: boolean;
 }
 
-function Toast({ message, intent = "notification", handleClose }: ToastData) {
+const DEFAULT_CLOSE_DELAY = 2000;
+
+function Toast({
+  message,
+  intent = "notification",
+  handleClose,
+  closeDelay = DEFAULT_CLOSE_DELAY,
+  autoClose = false,
+  clickToClose,
+}: ToastData) {
   const Icon = intent !== null && iconDict[intent];
+
+  useEffect(() => {
+    if (autoClose) {
+      const timeOut = setTimeout(() => {
+        handleClose && handleClose();
+      }, closeDelay);
+      return () => clearTimeout(timeOut);
+    }
+  }, [handleClose, closeDelay, autoClose]);
+
   return (
-    <div className={toastStyles({ intent })} onClick={handleClose}>
+    <div
+      className={toastStyles({ intent })}
+      onClick={() => clickToClose && handleClose && handleClose()}
+    >
       {Icon && <Icon strokeWidth={1.5} />}
       <X className="absolute right-2 top-2 size-4 text-inherit opacity-50" />
       <Text as="p" type={"body-1"}>

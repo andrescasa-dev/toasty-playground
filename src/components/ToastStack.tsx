@@ -23,12 +23,14 @@ export type Position = VariantProps<typeof toastStackStyles>["position"];
 interface ToastStackProps extends VariantProps<typeof toastStackStyles> {
   stackToastData: ToastWithId[];
   closeToast: (id: string) => void;
+  clickToClose?: boolean;
 }
 
 function ToastStack({
   stackToastData = [],
   position = "top-left",
   closeToast,
+  clickToClose = true,
 }: ToastStackProps) {
   return (
     <div className={toastStackStyles({ position })}>
@@ -38,6 +40,7 @@ function ToastStack({
             key={toast.id}
             {...toast}
             handleClose={() => closeToast(toast.id)}
+            clickToClose={clickToClose}
           />
         ))}
       </div>

@@ -4,7 +4,7 @@ import { Switch as SwitchHeadless } from "@headlessui/react";
 import { useState } from "react";
 
 function Switch({ name }: { name?: string }) {
-  const [enabled, setEnabled] = useState(false);
+  const [enabled, setEnabled] = useState(true);
 
   return (
     <SwitchHeadless

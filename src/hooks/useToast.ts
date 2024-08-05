@@ -13,10 +13,7 @@ const positionOpts = [
 ] as const;
 
 const useToast = () => {
-  const [toastList, setToastList] = useState([
-    { message: "hola mundo", id: crypto.randomUUID() } as ToastWithId,
-    { message: "hola mundo", id: crypto.randomUUID() } as ToastWithId,
-  ]);
+  const [toastList, setToastList] = useState<ToastWithId[]>([]);
   const [position, setPosition] = useState<Position>(positionOpts[0]);
 
   const addToast = (toast: ToastData) =>

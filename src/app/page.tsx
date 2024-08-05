@@ -30,11 +30,11 @@ export default function Home() {
 
     const toastOpts: Record<string, string | Boolean> = {};
     for (const [key, value] of entries) {
-      if (key !== "position") {
-        if (value === "true") {
+      if (key !== "position" && key !== "clickToClose") {
+        if (value === "true" || value === "false") {
           toastOpts[key] = Boolean(value);
         } else {
-          toastOpts[key] = value as string;
+          if (value) toastOpts[key] = value as string; //if value is falsy do not include in the final obj, otherwise the default arg of component won't work, '' is falsy but not nullish
         }
       }
     }
@@ -100,6 +100,7 @@ export default function Home() {
           </ConfigSection>
           <ConfigSection title="Message">
             <Input
+              required
               name="message"
               onChange={(e) => setMsg(e.target.value)}
               value={msg}
@@ -116,9 +117,10 @@ export default function Home() {
                   Auto-close Delay:
                 </Text>
                 <Input
-                  name="autoCloseDelay"
-                  placeholder="500"
-                  className="w-14"
+                  type="number"
+                  name="closeDelay"
+                  placeholder="2000"
+                  className="w-16"
                 />
                 <Text as="p" type="body-1">
                   ms
