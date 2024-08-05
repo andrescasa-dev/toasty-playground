@@ -13,8 +13,14 @@ import useToast from "@/hooks/useToast";
 import { useState } from "react";
 
 export default function Home() {
-  const { cleanToastStack, pushToast, toastList, setPosition, position } =
-    useToast();
+  const {
+    cleanToastStack,
+    pushToast,
+    toastList,
+    setPosition,
+    position,
+    closeToast,
+  } = useToast();
   const [msg, setMsg] = useState("");
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
@@ -43,7 +49,11 @@ export default function Home() {
 
   return (
     <main className="flex h-screen items-center">
-      <ToastStack stackToastData={toastList} position={position} />
+      <ToastStack
+        stackToastData={toastList}
+        position={position}
+        closeToast={closeToast}
+      />
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col gap-4 md:gap-y-9"

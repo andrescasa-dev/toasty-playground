@@ -29,12 +29,13 @@ const toastStyles = cva(
 
 export interface ToastData extends VariantProps<typeof toastStyles> {
   message?: string;
+  handleClose?: () => void;
 }
 
-function Toast({ message, intent = "notification" }: ToastData) {
+function Toast({ message, intent = "notification", handleClose }: ToastData) {
   const Icon = intent !== null && iconDict[intent];
   return (
-    <div className={toastStyles({ intent })}>
+    <div className={toastStyles({ intent })} onClick={handleClose}>
       {Icon && <Icon strokeWidth={1.5} />}
       <X className="absolute right-2 top-2 size-4 text-inherit opacity-50" />
       <Text as="p" type={"body-1"}>

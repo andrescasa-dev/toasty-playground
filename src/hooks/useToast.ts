@@ -31,12 +31,20 @@ const useToast = () => {
   const cleanToastStack = () => {
     setToastList([]);
   };
+
+  const closeToast = (id: string) => {
+    setToastList((prevList) => {
+      return prevList.filter((toast) => toast.id !== id);
+    });
+  };
+
   return {
     cleanToastStack,
     pushToast: addToast,
     toastList,
     position,
     setPosition,
+    closeToast,
   };
 };
 
