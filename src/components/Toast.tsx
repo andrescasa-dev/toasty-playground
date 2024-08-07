@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
-import Text from "./typography/Text";
-import { CircleX, Info, TriangleAlert, X } from "lucide-react";
 import { cva, VariantProps } from "class-variance-authority";
+import { CircleX, Info, TriangleAlert, X } from "lucide-react";
+import { useEffect } from "react";
+import Text from "./typography/Text";
+import Timer from "./Timer";
 
 const iconDict = {
   notification: false as const,
@@ -11,7 +12,7 @@ const iconDict = {
 };
 
 const toastStyles = cva(
-  "relative w-[17rem] cursor-pointer rounded-400 border px-4 py-4 flex gap-1.5",
+  "relative w-[17rem] cursor-pointer rounded-400 border px-4 py-4 flex-col gap-1.5",
   {
     variants: {
       intent: {
@@ -31,7 +32,7 @@ export interface ToastData extends VariantProps<typeof toastStyles> {
   message?: string;
   closeDelay?: number;
   handleClose?: () => void;
-  autoClose?: boolean;
+  isAutoClose?: boolean;
   clickToClose?: boolean;
 }
 
@@ -42,19 +43,19 @@ function Toast({
   intent = "notification",
   handleClose,
   closeDelay = DEFAULT_CLOSE_DELAY,
-  autoClose = false,
+  isAutoClose = false,
   clickToClose,
 }: ToastData) {
   const Icon = intent !== null && iconDict[intent];
 
   useEffect(() => {
-    if (autoClose) {
+    if (isAutoClose) {
       const timeOut = setTimeout(() => {
         handleClose && handleClose();
       }, closeDelay);
       return () => clearTimeout(timeOut);
     }
-  }, [handleClose, closeDelay, autoClose]);
+  }, [handleClose, closeDelay, isAutoClose]);
 
   return (
     <div
@@ -66,6 +67,7 @@ function Toast({
       <Text as="p" type={"body-1"}>
         {message}
       </Text>
+      <Timer timeMs={closeDelay} />
     </div>
   );
 }

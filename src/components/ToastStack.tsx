@@ -23,14 +23,18 @@ export type Position = VariantProps<typeof toastStackStyles>["position"];
 interface ToastStackProps extends VariantProps<typeof toastStackStyles> {
   stackToastData: ToastWithId[];
   closeToast: (id: string) => void;
-  clickToClose?: boolean;
+  isClickToClose?: boolean;
+  isAutoClose?: boolean;
+  closeDelay?: number;
 }
 
 function ToastStack({
   stackToastData = [],
   position = "top-left",
   closeToast,
-  clickToClose = true,
+  isClickToClose = true,
+  isAutoClose,
+  closeDelay,
 }: ToastStackProps) {
   return (
     <div className={toastStackStyles({ position })}>
@@ -38,9 +42,11 @@ function ToastStack({
         {stackToastData.map((toast) => (
           <Toast
             key={toast.id}
-            {...toast}
+            clickToClose={isClickToClose}
+            isAutoClose={isAutoClose}
+            closeDelay={closeDelay}
+            {...toast} // this is the personalize config of a particular toast, so it always must rewrite the more general config of the toastStack
             handleClose={() => closeToast(toast.id)}
-            clickToClose={clickToClose}
           />
         ))}
       </div>

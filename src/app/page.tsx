@@ -7,21 +7,23 @@ import LabelWrapper from "@/components/LabelWrapper";
 import RadioGroup from "@/components/RadioGroup";
 import Switch from "@/components/Switch";
 import { ToastData } from "@/components/Toast";
-import ToastStack, { Position } from "@/components/ToastStack";
+import { Position } from "@/components/ToastStack";
 import Text from "@/components/typography/Text";
 import useToast from "@/hooks/useToast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const {
-    cleanToastStack,
-    pushToast,
-    toastList,
-    setPosition,
-    position,
-    closeToast,
-  } = useToast();
-  const [msg, setMsg] = useState("");
+  const { cleanToastStack, pushToast, setStackConfig } = useToast();
+
+  const [msg, setMsg] = useState("some message");
+  const [isClickToClose, setIsClickToClose] = useState(false);
+  const [isAutoClose, setIsAutoClose] = useState(false);
+  const [closeDelay, setCloseDelay] = useState(200);
+  const [position, setPosition] = useState<Position>("bottom-right");
+
+  useEffect(() => {
+    setStackConfig({ isClickToClose, position, isAutoClose, closeDelay });
+  }, [isClickToClose, position, setStackConfig, isAutoClose, closeDelay]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -39,9 +41,6 @@ export default function Home() {
       }
     }
 
-    const position = formData.get("position") as Position;
-    setPosition(position);
-
     const newToast = toastOpts as ToastData;
     console.log(newToast);
     pushToast(toastOpts);
@@ -49,11 +48,6 @@ export default function Home() {
 
   return (
     <main className="flex h-screen items-center">
-      <ToastStack
-        stackToastData={toastList}
-        position={position}
-        closeToast={closeToast}
-      />
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col gap-4 md:gap-y-9"
@@ -87,6 +81,8 @@ export default function Home() {
           <ConfigSection title="Position">
             <RadioGroup
               name="position"
+              value={position}
+              onChange={setPosition}
               options={[
                 "top-left",
                 "top",
@@ -110,13 +106,18 @@ export default function Home() {
           <ConfigSection title="Close Options">
             <div className="flex flex-col gap-4">
               <LabelWrapper text="Auto-close">
-                <Switch name="autoClose" />
+                <Switch
+                  name="autoClose"
+                  checked={isAutoClose}
+                  onChange={setIsAutoClose}
+                />
               </LabelWrapper>
               <div className="flex items-center gap-1">
                 <Text as="p" type="body-1">
                   Auto-close Delay:
                 </Text>
                 <Input
+                  onChange={(e) => setCloseDelay(Number(e.target.value))}
                   type="number"
                   name="closeDelay"
                   placeholder="2000"
@@ -128,7 +129,11 @@ export default function Home() {
               </div>
 
               <LabelWrapper text="Click to close">
-                <Switch name="clickToClose" />
+                <Switch
+                  checked={isClickToClose}
+                  onChange={setIsClickToClose}
+                  name="clickToClose"
+                />
               </LabelWrapper>
             </div>
           </ConfigSection>
