@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-function Timer({ timeMs }: { timeMs: number }) {
-  const countDownRate = timeMs * 0.02;
-  const [value, setValue] = useState(timeMs);
+function Timer({ timeMs: targetTime }: { timeMs: number }) {
+  const countDownRate = targetTime * 0.02;
+  const [value, setValue] = useState(targetTime);
   useEffect(() => {
     //@ts-ignore
     let idTimer: Timeout;
@@ -12,9 +12,15 @@ function Timer({ timeMs }: { timeMs: number }) {
       }, countDownRate);
     }
     return () => clearTimeout(idTimer);
-  }, [value, timeMs, countDownRate]);
+  }, [value, targetTime, countDownRate]);
   return (
-    <input type="range" min="0" max={timeMs} value={value} className="w-full" />
+    <input
+      type="range"
+      min="0"
+      max={targetTime}
+      value={value}
+      className="w-full"
+    />
   );
 }
 
