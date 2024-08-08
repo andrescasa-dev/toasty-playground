@@ -12,7 +12,7 @@ const iconDict = {
 };
 
 const toastStyles = cva(
-  "relative w-[17rem] cursor-pointer rounded-400 border px-4 py-4 flex-col gap-1.5",
+  "relative w-[17rem] cursor-pointer rounded-400 border px-4 py-4",
   {
     variants: {
       intent: {
@@ -36,13 +36,13 @@ export interface ToastData extends VariantProps<typeof toastStyles> {
   clickToClose?: boolean;
 }
 
-const DEFAULT_CLOSE_DELAY = 2000;
+export const DEFAULT_PROGRESSBAR_DURATION = 2000;
 
 function Toast({
   message,
   intent = "notification",
   handleClose,
-  closeDelay = DEFAULT_CLOSE_DELAY,
+  closeDelay = DEFAULT_PROGRESSBAR_DURATION,
   isAutoClose = false,
   clickToClose,
 }: ToastData) {
@@ -62,12 +62,18 @@ function Toast({
       className={toastStyles({ intent })}
       onClick={() => clickToClose && handleClose && handleClose()}
     >
-      {Icon && <Icon strokeWidth={1.5} />}
-      <X className="absolute right-2 top-2 size-4 text-inherit opacity-50" />
-      <Text as="p" type={"body-1"}>
-        {message}
-      </Text>
-      <Timer timeMs={closeDelay} />
+      {clickToClose && (
+        <X className="absolute right-2 top-2 size-4 text-inherit opacity-50" />
+      )}
+
+      <div className="flex gap-1">
+        {Icon && <Icon strokeWidth={1.5} />}
+        <Text as="p" type={"body-1"}>
+          {message}
+        </Text>
+      </div>
+
+      {isAutoClose && <Timer duration={closeDelay} />}
     </div>
   );
 }

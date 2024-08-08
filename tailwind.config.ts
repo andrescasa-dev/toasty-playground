@@ -8,6 +8,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        trackingProgress: {
+          "0%": { width: "100%" },
+          "100%": { width: "0%" },
+        },
+      },
+      animation: {
+        trackingProgress: "trackingProgress 1s linear forwards",
+      },
       colors: {
         primary: "#1B1B1B",
         secondary: "#EDEDED",

@@ -6,7 +6,7 @@ import Input from "@/components/Input";
 import LabelWrapper from "@/components/LabelWrapper";
 import RadioGroup from "@/components/RadioGroup";
 import Switch from "@/components/Switch";
-import { ToastData } from "@/components/Toast";
+import { DEFAULT_PROGRESSBAR_DURATION, ToastData } from "@/components/Toast";
 import { Position } from "@/components/ToastStack";
 import Text from "@/components/typography/Text";
 import useToast from "@/hooks/useToast";
@@ -18,7 +18,7 @@ export default function Home() {
   const [msg, setMsg] = useState("some message");
   const [isClickToClose, setIsClickToClose] = useState(false);
   const [isAutoClose, setIsAutoClose] = useState(false);
-  const [closeDelay, setCloseDelay] = useState(200);
+  const [closeDelay, setCloseDelay] = useState(DEFAULT_PROGRESSBAR_DURATION);
   const [position, setPosition] = useState<Position>("bottom-right");
 
   useEffect(() => {
