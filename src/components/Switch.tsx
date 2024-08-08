@@ -1,11 +1,14 @@
 "use client";
 import { Switch as SwitchHeadless } from "@headlessui/react";
+import React from "react";
 
-function Switch({ name, ...delegate }: { name?: string }) {
+interface SwitchProps
+  extends React.ComponentPropsWithoutRef<typeof SwitchHeadless> {}
+
+function Switch({ ...delegate }: SwitchProps) {
   return (
     <SwitchHeadless
       {...delegate}
-      name={name}
       value="true"
       className="group inline-flex h-5 w-9 items-center rounded-full border-2 border-primary bg-white transition data-[checked]:bg-primary"
     >

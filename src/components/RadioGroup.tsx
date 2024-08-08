@@ -2,7 +2,12 @@ import { RadioGroup as RadioGroupHeadless } from "@headlessui/react";
 import LabelWrapper from "./LabelWrapper";
 import Radio from "./Radio";
 
-function RadioGroup({ options, ...delegate }: { options: string[] }) {
+interface RadioGroupProps
+  extends React.ComponentPropsWithoutRef<typeof RadioGroupHeadless> {
+  options: string[];
+}
+
+function RadioGroup({ options, ...delegate }: RadioGroupProps) {
   return (
     <RadioGroupHeadless {...delegate}>
       {options.map((option) => (

@@ -73,9 +73,9 @@ export default function Home() {
         <div className="grid gap-4 px-5 md:max-w-5xl md:grid-cols-2 md:self-center">
           <ConfigSection title="Variants">
             <RadioGroup
-              name="intent"
               options={["info", "warning", "error", "notification"]}
               className="grid grid-cols-3 gap-2 gap-y-4"
+              name="intent"
             />
           </ConfigSection>
           <ConfigSection title="Position">
