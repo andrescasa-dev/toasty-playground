@@ -6,8 +6,8 @@ import Input from "@/components/Input";
 import LabelWrapper from "@/components/LabelWrapper";
 import RadioGroup from "@/components/RadioGroup";
 import Switch from "@/components/Switch";
-import { DEFAULT_PROGRESSBAR_DURATION, ToastData } from "@/components/Toast";
-import { Position } from "@/components/ToastStack";
+import { ToastData } from "@/components/Toast";
+import { DefaultToasty } from "@/components/ToastProvider";
 import Text from "@/components/typography/Text";
 import useToast from "@/hooks/useToast";
 import { useEffect, useState } from "react";
@@ -16,10 +16,13 @@ export default function Home() {
   const { cleanToastStack, pushToast, setStackConfig } = useToast();
 
   const [msg, setMsg] = useState("some message");
-  const [isClickToClose, setIsClickToClose] = useState(false);
-  const [isAutoClose, setIsAutoClose] = useState(false);
-  const [closeDelay, setCloseDelay] = useState(DEFAULT_PROGRESSBAR_DURATION);
-  const [position, setPosition] = useState<Position>("bottom-right");
+  const [isClickToClose, setIsClickToClose] = useState(
+    DefaultToasty.isClickToClose,
+  );
+  const [isAutoClose, setIsAutoClose] = useState(DefaultToasty.isAutoClose);
+  const [closeDelay, setCloseDelay] = useState(DefaultToasty.closeDelay);
+  const [position, setPosition] = useState(DefaultToasty.position);
+  const [intent, setIntent] = useState("notification");
 
   useEffect(() => {
     setStackConfig({ isClickToClose, position, isAutoClose, closeDelay });
@@ -27,22 +30,18 @@ export default function Home() {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const entries = formData.entries();
 
-    const toastOpts: Record<string, string | Boolean> = {};
-    for (const [key, value] of entries) {
-      if (key !== "position" && key !== "clickToClose") {
-        if (value === "true" || value === "false") {
-          toastOpts[key] = Boolean(value);
-        } else {
-          if (value) toastOpts[key] = value as string; //if value is falsy do not include in the final obj, otherwise the default arg of component won't work, '' is falsy but not nullish
-        }
-      }
-    }
+    const newToast: ToastData = {
+      id: crypto.randomUUID(),
+      closeDelay: closeDelay,
+      isAutoClose: isAutoClose,
+      isClickToClose: isClickToClose,
+      message: msg,
+      //@ts-expect-error Type validation here is not necessary, because this error only occurs in this playground context, the final user won't use Toasty like in this sandbox
+      intent: intent,
+    };
 
-    const newToast = toastOpts as ToastData;
-    pushToast(toastOpts);
+    pushToast(newToast);
   };
 
   return (
@@ -75,6 +74,8 @@ export default function Home() {
               options={["info", "warning", "error", "notification"]}
               className="grid grid-cols-3 gap-2 gap-y-4"
               name="intent"
+              value={intent}
+              onChange={setIntent}
             />
           </ConfigSection>
           <ConfigSection title="Position">
@@ -119,7 +120,7 @@ export default function Home() {
                   onChange={(e) => setCloseDelay(Number(e.target.value))}
                   type="number"
                   name="closeDelay"
-                  placeholder="2000"
+                  placeholder={String(DefaultToasty.closeDelay)}
                   className="w-16"
                 />
                 <Text as="p" type="body-1">

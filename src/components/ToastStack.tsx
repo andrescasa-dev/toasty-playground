@@ -1,5 +1,6 @@
 import { cva, VariantProps } from "class-variance-authority";
 import Toast, { ToastData } from "./Toast";
+import { ToastStackConfig } from "@/types";
 
 const toastStackStyles = cva("fixed z-[1000]", {
   variants: {
@@ -14,25 +15,20 @@ const toastStackStyles = cva("fixed z-[1000]", {
   },
 });
 
-export interface ToastWithId extends ToastData {
-  id: string;
-}
-
 export type Position = VariantProps<typeof toastStackStyles>["position"];
 
-interface ToastStackProps extends VariantProps<typeof toastStackStyles> {
-  stackToastData: ToastWithId[];
+interface ToastStackProps
+  extends VariantProps<typeof toastStackStyles>,
+    ToastStackConfig {
+  stackToastData: ToastData[];
   closeToast: (id: string) => void;
-  isClickToClose?: boolean;
-  isAutoClose?: boolean;
-  closeDelay?: number;
 }
 
 function ToastStack({
   stackToastData = [],
-  position = "top-left",
   closeToast,
-  isClickToClose = true,
+  position,
+  isClickToClose,
   isAutoClose,
   closeDelay,
 }: ToastStackProps) {
@@ -42,8 +38,11 @@ function ToastStack({
         {stackToastData.map((toast) => (
           <Toast
             key={toast.id}
-            clickToClose={isClickToClose}
+            // @ts-expect-error:ts(2783) ts don't know that the toast config is a partial type for the user, But for the dependency is a Required type
+            isClickToClose={isClickToClose}
+            // @ts-expect-error:ts(2783) ts don't know that the toast config is a partial type for the user, But for the dependency is a Required type
             isAutoClose={isAutoClose}
+            // @ts-expect-error:ts(2783) ts don't know that the toast config is a partial type for the user, But for the dependency is a Required type
             closeDelay={closeDelay}
             {...toast} // this is the personalize config of a particular toast, so it always must rewrite the more general config of the toastStack
             handleClose={() => closeToast(toast.id)}

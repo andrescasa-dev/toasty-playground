@@ -1,44 +1,34 @@
 "use client";
 import { ToastData } from "@/components/Toast";
-import ToastStack, { Position, ToastWithId } from "@/components/ToastStack";
+import ToastStack from "@/components/ToastStack";
+import { ToastyConfig } from "@/types";
 import { createContext, ReactNode, useState } from "react";
 
 interface ToastContextValue {
   cleanToastStack: () => void;
   pushToast: (toast: ToastData) => void;
-  setStackConfig: (config: StackConfig) => void;
+  setStackConfig: (config: ToastyConfig) => void;
 }
-
-type StackConfig = {
-  position?: Position;
-  isClickToClose?: boolean;
-  isAutoClose?: boolean;
-  closeDelay?: number;
-};
-
-const positionOpts = [
-  "top-left",
-  "top-right",
-  "top",
-  "bottom-left",
-  "bottom",
-  "bottom-right",
-] as const;
 
 export const ToastContext = createContext<ToastContextValue | null>(null);
 
-function ToastProvider({ children }: { children: ReactNode }) {
-  const [toastList, setToastList] = useState<ToastWithId[]>([]);
-  const [stackConfig, setStackConfig] = useState<StackConfig>({
-    position: positionOpts[0],
-  });
+export const DefaultToasty: ToastyConfig = {
+  position: "bottom-right",
+  isClickToClose: true,
+  isAutoClose: true,
+  closeDelay: 2000,
+};
 
-  const pushToast = (toast: ToastData) =>
+function ToastProvider({ children }: { children: ReactNode }) {
+  const [toastList, setToastList] = useState<ToastData[]>([]);
+  const [stackConfig, setStackConfig] = useState(DefaultToasty);
+
+  const pushToast = (toast: Partial<ToastData>) =>
     setToastList((prev) => {
       const newToast = {
-        ...toast,
         id: crypto.randomUUID(),
-      } as ToastWithId;
+        ...toast,
+      } as ToastData; //I need the user the use a Partial Toast config, but for Toasty all toast args are required.
       return [...prev, newToast];
     });
 
@@ -61,11 +51,11 @@ function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={value}>
       <ToastStack
-        stackToastData={toastList}
         position={stackConfig.position}
         isClickToClose={stackConfig.isClickToClose}
         isAutoClose={stackConfig.isAutoClose}
         closeDelay={stackConfig.closeDelay}
+        stackToastData={toastList}
         closeToast={closeToast}
       />
       {children}

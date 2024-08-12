@@ -3,6 +3,7 @@ import { CircleX, Info, TriangleAlert, X } from "lucide-react";
 import { useEffect } from "react";
 import Text from "./typography/Text";
 import Timer from "./Timer";
+import { ToastStackConfig } from "@/types";
 
 const iconDict = {
   notification: false as const,
@@ -28,23 +29,21 @@ const toastStyles = cva(
   },
 );
 
-export interface ToastData extends VariantProps<typeof toastStyles> {
-  message?: string;
-  closeDelay?: number;
+export interface ToastData
+  extends VariantProps<typeof toastStyles>,
+    ToastStackConfig {
+  message: string;
   handleClose?: () => void;
-  isAutoClose?: boolean;
-  clickToClose?: boolean;
+  id: string;
 }
 
-export const DEFAULT_PROGRESSBAR_DURATION = 2000;
-
 function Toast({
+  closeDelay,
+  isAutoClose,
+  isClickToClose,
   message,
   intent = "notification",
   handleClose,
-  closeDelay = DEFAULT_PROGRESSBAR_DURATION,
-  isAutoClose = false,
-  clickToClose,
 }: ToastData) {
   const Icon = intent !== null && iconDict[intent];
 
@@ -60,9 +59,9 @@ function Toast({
   return (
     <div
       className={toastStyles({ intent })}
-      onClick={() => clickToClose && handleClose && handleClose()}
+      onClick={() => isClickToClose && handleClose && handleClose()}
     >
-      {clickToClose && (
+      {isClickToClose && (
         <X className="absolute right-2 top-2 size-4 text-inherit opacity-50" />
       )}
 
