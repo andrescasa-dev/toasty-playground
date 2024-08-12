@@ -42,7 +42,6 @@ export default function Home() {
     }
 
     const newToast = toastOpts as ToastData;
-    console.log(newToast);
     pushToast(toastOpts);
   };
 

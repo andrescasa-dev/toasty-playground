@@ -63,10 +63,10 @@ function ToastProvider({ children }: { children: ReactNode }) {
       <ToastStack
         stackToastData={toastList}
         position={stackConfig.position}
-        closeToast={closeToast}
         isClickToClose={stackConfig.isClickToClose}
         isAutoClose={stackConfig.isAutoClose}
         closeDelay={stackConfig.closeDelay}
+        closeToast={closeToast}
       />
       {children}
     </ToastContext.Provider>

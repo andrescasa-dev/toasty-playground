@@ -23,6 +23,10 @@ const config: Config = {
         background: "#FFFFFF",
         text: "#000000",
         border: "#B3B2B2",
+
+        warning: "#DC7609",
+        error: "#E60000",
+        info: "#0973DC",
       },
     },
     borderRadius: {

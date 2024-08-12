@@ -17,9 +17,9 @@ const toastStyles = cva(
     variants: {
       intent: {
         notification: "border-border bg-white text-text",
-        info: "border-[#0973DC]/30 text-[#0973DC] bg-[#F0F8FF]",
-        warning: "border-[#DC7609]/30 text-[#DC7609] bg-[#FFFCF0]",
-        error: "border-[#E60000]/30 text-[#E60000] bg-[#FFF0F0]",
+        info: "border-info/30 text-info bg-[#F0F8FF]",
+        warning: "border-warning/30 text-warning bg-[#FFFCF0]",
+        error: "border-error/30 text-error bg-[#FFF0F0]",
       },
     },
     defaultVariants: {
@@ -73,7 +73,7 @@ function Toast({
         </Text>
       </div>
 
-      {isAutoClose && <Timer duration={closeDelay} />}
+      {isAutoClose && <Timer duration={closeDelay} intent={intent} />}
     </div>
   );
 }
