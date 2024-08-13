@@ -6,8 +6,8 @@ import Input from "@/components/Input";
 import LabelWrapper from "@/components/LabelWrapper";
 import RadioGroup from "@/components/RadioGroup";
 import Switch from "@/components/Switch";
-import { ToastData } from "@/components/Toast";
-import { DefaultToasty } from "@/components/ToastProvider";
+import { PersonalizedToastConfig } from "@/components/Toast";
+import { defaultConfig } from "@/components/ToastProvider";
 import Text from "@/components/typography/Text";
 import useToast from "@/hooks/useToast";
 import { useEffect, useState } from "react";
@@ -17,35 +17,37 @@ export default function Home() {
 
   const [msg, setMsg] = useState("some message");
   const [isClickToClose, setIsClickToClose] = useState(
-    DefaultToasty.isClickToClose,
+    defaultConfig.isClickToClose,
   );
-  const [isAutoClose, setIsAutoClose] = useState(DefaultToasty.isAutoClose);
-  const [closeDelay, setCloseDelay] = useState(DefaultToasty.closeDelay);
-  const [position, setPosition] = useState(DefaultToasty.position);
+  const [isAutoClose, setIsAutoClose] = useState(defaultConfig.isAutoClose);
+  const [closeDelay, setCloseDelay] = useState(defaultConfig.closeDelay);
+  const [position, setPosition] = useState(defaultConfig.position);
   const [intent, setIntent] = useState("notification");
 
   useEffect(() => {
-    setStackConfig({ isClickToClose, position, isAutoClose, closeDelay });
+    setStackConfig({
+      isClickToClose: isClickToClose,
+      position,
+      isAutoClose,
+      closeDelay,
+    });
   }, [isClickToClose, position, setStackConfig, isAutoClose, closeDelay]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const newToast: ToastData = {
-      id: crypto.randomUUID(),
-      closeDelay: closeDelay,
-      isAutoClose: isAutoClose,
-      isClickToClose: isClickToClose,
+    const newToast: PersonalizedToastConfig = {
       message: msg,
       //@ts-expect-error Type validation here is not necessary, because this error only occurs in this playground context, the final user won't use Toasty like in this sandbox
       intent: intent,
     };
+    setMsg("");
 
     pushToast(newToast);
   };
 
   return (
-    <main className="flex h-screen items-center">
+    <main className="flex h-screen flex-col items-center gap-6">
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col gap-4 md:gap-y-9"
@@ -120,14 +122,13 @@ export default function Home() {
                   onChange={(e) => setCloseDelay(Number(e.target.value))}
                   type="number"
                   name="closeDelay"
-                  placeholder={String(DefaultToasty.closeDelay)}
+                  placeholder={String(defaultConfig.closeDelay)}
                   className="w-16"
                 />
                 <Text as="p" type="body-1">
                   ms
                 </Text>
               </div>
-
               <LabelWrapper text="Click to close">
                 <Switch
                   checked={isClickToClose}
@@ -138,10 +139,25 @@ export default function Home() {
             </div>
           </ConfigSection>
         </div>
+      </form>
+      <div className="flex gap-2">
         <LabelWrapper text="Dark Mode" className="self-center">
           <Switch />
         </LabelWrapper>
-      </form>
+        <Button
+          onClick={() =>
+            pushToast({
+              intent: "info",
+              message: "This toast overwrites general config",
+              isClickToClose: true,
+              isAutoClose: false,
+            })
+          }
+          intent="primary"
+        >
+          Personalized Toast
+        </Button>
+      </div>
     </main>
   );
 }

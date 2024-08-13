@@ -1,9 +1,11 @@
-export interface ToastStackConfig {
-  isClickToClose: boolean;
-  isAutoClose: boolean;
-  closeDelay: number;
+import { Position } from "@/components/ToastStack";
+
+export interface GeneralToastConfig {
+  isClickToClose?: boolean;
+  isAutoClose?: boolean;
+  closeDelay?: number;
 }
 
-export interface ToastyConfig extends ToastStackConfig {
-  position: Position;
+export interface ToastStackConfig extends GeneralToastConfig {
+  position?: Position;
 }

@@ -3,7 +3,7 @@ import { CircleX, Info, TriangleAlert, X } from "lucide-react";
 import { useEffect } from "react";
 import Text from "./typography/Text";
 import Timer from "./Timer";
-import { ToastStackConfig } from "@/types";
+import { GeneralToastConfig } from "@/types";
 
 const iconDict = {
   notification: false as const,
@@ -13,7 +13,7 @@ const iconDict = {
 };
 
 const toastStyles = cva(
-  "relative w-[17rem] cursor-pointer rounded-400 border px-4 py-4",
+  "relative min-w-[17rem] max-w-[22rem] w-fit cursor-pointer rounded-400 border pl-4 pr-8 py-4",
   {
     variants: {
       intent: {
@@ -29,22 +29,28 @@ const toastStyles = cva(
   },
 );
 
-export interface ToastData
+export interface PersonalizedToastConfig
   extends VariantProps<typeof toastStyles>,
-    ToastStackConfig {
-  message: string;
-  handleClose?: () => void;
+    GeneralToastConfig {
+  message?: string;
+}
+
+export interface ToastDataWithID extends PersonalizedToastConfig {
   id: string;
 }
 
+interface ToastProps extends PersonalizedToastConfig {
+  handleClose?: () => void;
+}
+
 function Toast({
+  isClickToClose,
   closeDelay,
   isAutoClose,
-  isClickToClose,
   message,
   intent = "notification",
   handleClose,
-}: ToastData) {
+}: ToastProps) {
   const Icon = intent !== null && iconDict[intent];
 
   useEffect(() => {
@@ -72,7 +78,7 @@ function Toast({
         </Text>
       </div>
 
-      {isAutoClose && <Timer duration={closeDelay} intent={intent} />}
+      {isAutoClose && <Timer duration={closeDelay!} intent={intent} />}
     </div>
   );
 }

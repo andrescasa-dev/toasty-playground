@@ -1,18 +1,18 @@
 "use client";
-import { ToastData } from "@/components/Toast";
+import { PersonalizedToastConfig, ToastDataWithID } from "@/components/Toast";
 import ToastStack from "@/components/ToastStack";
-import { ToastyConfig } from "@/types";
+import { ToastStackConfig } from "@/types";
 import { createContext, ReactNode, useState } from "react";
 
 interface ToastContextValue {
   cleanToastStack: () => void;
-  pushToast: (toast: ToastData) => void;
-  setStackConfig: (config: ToastyConfig) => void;
+  pushToast: (toast: PersonalizedToastConfig) => void;
+  setStackConfig: (config: ToastStackConfig) => void;
 }
 
 export const ToastContext = createContext<ToastContextValue | null>(null);
 
-export const DefaultToasty: ToastyConfig = {
+export const defaultConfig: ToastStackConfig = {
   position: "bottom-right",
   isClickToClose: true,
   isAutoClose: true,
@@ -20,15 +20,15 @@ export const DefaultToasty: ToastyConfig = {
 };
 
 function ToastProvider({ children }: { children: ReactNode }) {
-  const [toastList, setToastList] = useState<ToastData[]>([]);
-  const [stackConfig, setStackConfig] = useState(DefaultToasty);
+  const [toastList, setToastList] = useState<ToastDataWithID[]>([]);
+  const [stackConfig, setStackConfig] = useState(defaultConfig);
 
-  const pushToast = (toast: Partial<ToastData>) =>
+  const pushToast: ToastContextValue["pushToast"] = (toast) =>
     setToastList((prev) => {
       const newToast = {
         id: crypto.randomUUID(),
         ...toast,
-      } as ToastData; //I need the user the use a Partial Toast config, but for Toasty all toast args are required.
+      };
       return [...prev, newToast];
     });
 
