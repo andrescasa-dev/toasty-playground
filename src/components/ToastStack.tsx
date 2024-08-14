@@ -33,7 +33,6 @@ function ToastStack({
   isAutoClose: defaultIsAutoClose,
   closeDelay: defaultCloseDelay,
 }: ToastStackProps) {
-  console.log("stack renderd");
   return (
     <div className={toastStackStyles({ position })}>
       <div

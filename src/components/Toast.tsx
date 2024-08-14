@@ -60,7 +60,9 @@ function Toast({
       }, closeDelay);
       return () => clearTimeout(timeOut);
     }
-  }, [handleClose, closeDelay, isAutoClose]);
+    //I don't pass into the dependency array the handleClose because in toast stack i'm creating a new declaration each time
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [closeDelay, isAutoClose]);
 
   return (
     <div
