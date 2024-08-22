@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const { cleanToastStack, pushToast, setStackConfig } = useToast();
 
-  const [msg, setMsg] = useState("some message");
+  const [msg, setMsg] = useState("");
   const [isClickToClose, setIsClickToClose] = useState(
     defaultConfig.isClickToClose,
   );
@@ -51,7 +51,7 @@ export default function Home() {
         onSubmit={handleSubmit}
         className="flex w-full flex-col gap-4 md:gap-y-9"
       >
-        <div className="flex flex-col items-center gap-4">
+        <section className="flex flex-col items-center gap-4">
           <Text as="h1" type="display">
             Toasty
           </Text>
@@ -67,13 +67,19 @@ export default function Home() {
               Render Toast
             </Button>
           </div>
-        </div>
+        </section>
 
-        <div className="grid gap-4 px-5 md:max-w-5xl md:grid-cols-2 md:self-center">
+        <section className="grid gap-4 px-5 md:max-w-5xl md:grid-cols-2 md:self-center">
+          <div className="md:col-span-2">
+            <Text as="p" type={"body-1"}>
+              Play with the general configuration of Toasty, ensuring
+              consistency. You can overwrite it with a particular toast
+            </Text>
+          </div>
           <ConfigSection title="Variants">
             <RadioGroup
               options={["info", "warning", "error", "notification"]}
-              className="grid grid-cols-3 gap-2"
+              className="grid grid-cols-3 gap-3"
               name="intent"
               value={intent}
               onChange={setIntent}
@@ -92,7 +98,7 @@ export default function Home() {
                 "bottom",
                 "bottom-right",
               ]}
-              className="grid grid-cols-3 gap-2"
+              className="grid grid-cols-3 gap-3"
             />
           </ConfigSection>
           <ConfigSection title="Message">
@@ -105,7 +111,7 @@ export default function Home() {
             />
           </ConfigSection>
           <ConfigSection title="Close Options">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <LabelWrapper text="Auto-close">
                 <Switch
                   name="autoClose"
@@ -122,7 +128,7 @@ export default function Home() {
                   type="number"
                   name="closeDelay"
                   placeholder={String(defaultConfig.closeDelay)}
-                  className="w-16"
+                  className="w-[4.3rem]"
                 />
                 <Text as="p" type="body-1">
                   ms
@@ -137,7 +143,7 @@ export default function Home() {
               </LabelWrapper>
             </div>
           </ConfigSection>
-        </div>
+        </section>
       </form>
       <div className="flex gap-2">
         <Button
@@ -151,7 +157,7 @@ export default function Home() {
           }
           intent="secondary"
         >
-          Personalized Toast
+          Render Particular Toast
         </Button>
       </div>
     </main>
