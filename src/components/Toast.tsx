@@ -1,9 +1,8 @@
 import { cva, VariantProps } from "class-variance-authority";
 import { CircleX, Info, TriangleAlert, X } from "lucide-react";
 import { useEffect } from "react";
-import Text from "./typography/Text";
+import { GeneralToastConfig } from "../types/index";
 import Timer from "./Timer";
-import { GeneralToastConfig } from "@/types";
 
 const iconDict = {
   notification: false as const,
@@ -56,7 +55,7 @@ function Toast({
   useEffect(() => {
     if (isAutoClose) {
       const timeOut = setTimeout(() => {
-        handleClose && handleClose();
+        if (handleClose) handleClose();
       }, closeDelay);
       return () => clearTimeout(timeOut);
     }
@@ -75,9 +74,7 @@ function Toast({
 
       <div className="flex gap-1">
         {Icon && <Icon strokeWidth={1.5} />}
-        <Text as="p" type={"body-1"}>
-          {message}
-        </Text>
+        <p className="text-sm md:text-base">{message}</p>
       </div>
 
       {isAutoClose && <Timer duration={closeDelay!} intent={intent} />}

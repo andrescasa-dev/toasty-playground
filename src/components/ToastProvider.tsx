@@ -19,9 +19,16 @@ export const defaultConfig: ToastStackConfig = {
   closeDelay: 2000,
 };
 
-function ToastProvider({ children }: { children: ReactNode }) {
+interface ToastProviderProps extends ToastStackConfig {
+  children: ReactNode;
+}
+
+function ToastProvider({ children, ...userConfig }: ToastProviderProps) {
   const [toastList, setToastList] = useState<ToastDataWithID[]>([]);
-  const [stackConfig, setStackConfig] = useState(defaultConfig);
+  const [stackConfig, setStackConfig] = useState<ToastStackConfig>({
+    ...defaultConfig,
+    ...userConfig,
+  });
 
   const pushToast: ToastContextValue["pushToast"] = (toast) =>
     setToastList((prev) => {

@@ -11,7 +11,7 @@ function LabelWrapper({
   className?: string;
   children: ReactElement;
 }) {
-  const composeClassName = `flex items-center gap-1 ${className}`;
+  const composeClassName = `flex items-center cursor-pointer ${className} `;
   return (
     <Field className={composeClassName}>
       {children}

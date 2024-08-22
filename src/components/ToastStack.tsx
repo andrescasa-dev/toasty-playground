@@ -1,4 +1,4 @@
-import { GeneralToastConfig } from "@/types";
+import { GeneralToastConfig } from "../types/index";
 import { cva, VariantProps } from "class-variance-authority";
 import Toast, { ToastDataWithID } from "./Toast";
 import clsx from "clsx";

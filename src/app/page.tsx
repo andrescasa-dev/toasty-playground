@@ -38,16 +38,15 @@ export default function Home() {
 
     const newToast: PersonalizedToastConfig = {
       message: msg,
-      //@ts-expect-error Type validation here is not necessary, because this error only occurs in this playground context, the final user won't use Toasty like in this sandbox
+      //@ts-expect-error ts(2322) This only happens in this playground context. adding validation could be great but unnecessary for this case
       intent: intent,
     };
-    setMsg("");
 
     pushToast(newToast);
   };
 
   return (
-    <main className="flex h-screen flex-col items-center gap-6">
+    <main className="flex h-screen flex-col items-center justify-center gap-6">
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col gap-4 md:gap-y-9"
@@ -74,7 +73,7 @@ export default function Home() {
           <ConfigSection title="Variants">
             <RadioGroup
               options={["info", "warning", "error", "notification"]}
-              className="grid grid-cols-3 gap-2 gap-y-4"
+              className="grid grid-cols-3 gap-2"
               name="intent"
               value={intent}
               onChange={setIntent}
@@ -93,7 +92,7 @@ export default function Home() {
                 "bottom",
                 "bottom-right",
               ]}
-              className="grid grid-cols-3 gap-2 gap-y-4"
+              className="grid grid-cols-3 gap-2"
             />
           </ConfigSection>
           <ConfigSection title="Message">
@@ -141,9 +140,6 @@ export default function Home() {
         </div>
       </form>
       <div className="flex gap-2">
-        <LabelWrapper text="Dark Mode" className="self-center">
-          <Switch />
-        </LabelWrapper>
         <Button
           onClick={() =>
             pushToast({
@@ -153,7 +149,7 @@ export default function Home() {
               isAutoClose: false,
             })
           }
-          intent="primary"
+          intent="secondary"
         >
           Personalized Toast
         </Button>
