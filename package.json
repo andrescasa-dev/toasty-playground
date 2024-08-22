@@ -1,6 +1,6 @@
 {
-  "name": "toasty",
-  "version": "0.1.0",
+  "name": "toasty-playground",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
