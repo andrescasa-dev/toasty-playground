@@ -10,6 +10,7 @@ import { PersonalizedToastConfig } from "@/components/Toast";
 import { defaultConfig } from "@/components/ToastProvider";
 import Text from "@/components/typography/Text";
 import useToast from "@/hooks/useToast";
+import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -22,7 +23,7 @@ export default function Home() {
   const [isAutoClose, setIsAutoClose] = useState(defaultConfig.isAutoClose);
   const [closeDelay, setCloseDelay] = useState(defaultConfig.closeDelay);
   const [position, setPosition] = useState(defaultConfig.position);
-  const [intent, setIntent] = useState("notification");
+  const [intent, setIntent] = useState("info");
 
   useEffect(() => {
     setStackConfig({
@@ -46,7 +47,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex h-screen flex-col items-center justify-center gap-6">
+    <main className="flex min-h-screen min-h-svh flex-col items-center justify-center gap-6 py-4">
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col gap-4 md:gap-y-9"
@@ -55,22 +56,39 @@ export default function Home() {
           <Text as="h1" type="display">
             Toasty
           </Text>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                onClick={() => cleanToastStack()}
+                intent="secondary"
+              >
+                Clear All
+              </Button>
+              <Button type="submit" intent="primary">
+                Render Toast
+              </Button>
+            </div>
             <Button
               type="button"
-              onClick={() => cleanToastStack()}
+              isFull={true}
+              onClick={() =>
+                pushToast({
+                  intent: "info",
+                  message: "This toast overwrites general config",
+                  isClickToClose: true,
+                  isAutoClose: false,
+                })
+              }
               intent="secondary"
             >
-              Clear All
-            </Button>
-            <Button type="submit" intent="primary">
-              Render Toast
+              Render Particular Toast
             </Button>
           </div>
         </section>
 
         <section className="grid gap-4 px-5 md:max-w-5xl md:grid-cols-2 md:self-center">
-          <div className="md:col-span-2">
+          <div className="text-gray-800 md:col-span-2">
             <Text as="p" type={"body-1"}>
               Play with the general configuration of Toasty, ensuring
               consistency. You can overwrite it with a particular toast
@@ -145,20 +163,14 @@ export default function Home() {
           </ConfigSection>
         </section>
       </form>
-      <div className="flex gap-2">
-        <Button
-          onClick={() =>
-            pushToast({
-              intent: "info",
-              message: "This toast overwrites general config",
-              isClickToClose: true,
-              isAutoClose: false,
-            })
-          }
-          intent="secondary"
+      <div className="flex flex-col items-center gap-2">
+        <a
+          className="flex cursor-pointer items-center text-gray-600 underline-offset-4 hover:underline"
+          href="https://www.npmjs.com/package/toasty-casa"
+          target="_blank"
         >
-          Render Particular Toast
-        </Button>
+          Documentation <ArrowUpRight className="h-4 w-4" />
+        </a>
       </div>
     </main>
   );
